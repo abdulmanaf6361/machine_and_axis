@@ -16,7 +16,7 @@ class Axis(models.Model):
     max_velocity = models.PositiveIntegerField()  # constant, manual update
     actual_position = models.FloatField()  # auto-generated, -190 to +190, updates every 0.1 sec
     target_position = models.FloatField()  # auto-generated, -190 to +191, updates every 0.1 sec
-    distance_to_go = models.FloatField()  # auto-calculated as target_position - actual_position, updates every 0.1 sec
+    distance_to_go = models.FloatField(editable=False)  # auto-calculated as target_position - actual_position, updates every 0.1 sec
     homed = models.BooleanField()  # 0/1, updates every 0.1 sec
     acceleration = models.PositiveIntegerField()  # auto-generated, 0 to 150, updates every 0.1 sec
     velocity = models.PositiveIntegerField()  # auto-generated, 0 to 80, updates every 0.1 sec

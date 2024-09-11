@@ -12,11 +12,19 @@ class IsManager(BasePermission):
     Manager has restricted permissions based on the access rules.
     """
     def has_permission(self, request, view):
-        if request.method in ['POST', 'PUT', 'PATCH']:
-            return request.user.groups.filter(name='Manager').exists() and view.action != 'tool_in_use'
+        if request.method == 'POST':
+            # Prevent access to actions involving 'tool_in_use'
+            if 'tool_in_use' in request.data:
+                print("Manager access denied for 'tool_in_use' field creation not allowed.")
+                return False
+            return request.user.groups.filter(name='Manager').exists()
+        if request.method in ['PUT', 'PATCH']:
+            # Prevent access to actions involving 'tool_in_use'
+            return True
         if request.method == 'DELETE':
             return False
         return request.user.groups.filter(name='Manager').exists()
+
 
 class IsSupervisor(BasePermission):
     """
@@ -24,12 +32,21 @@ class IsSupervisor(BasePermission):
     """
     def has_permission(self, request, view):
         if request.method == 'POST':
-            return request.user.groups.filter(name='Supervisor').exists()
-        if request.method in ['PUT', 'PATCH'] and view.action == 'tool_in_use':
+            # Prevent access to actions involving 'tool_in_use'
+            if 'tool_in_use' in request.data:
+                print("Supervisor access denied for 'tool_in_use' field creation not allowed.")
+                return False
+            return request.user.groups.filter(name='Manager').exists()
+
+        if request.method in ['PUT', 'PATCH']:
             return False
-        if request.method == 'DELETE' and view.action == 'tool_in_use':
-            return True
+        
+        if request.method == 'DELETE':
+            return False
+        
+        # Default case
         return request.user.groups.filter(name='Supervisor').exists()
+
 
 class IsOperator(BasePermission):
     """
@@ -37,7 +54,18 @@ class IsOperator(BasePermission):
     """
     def has_permission(self, request, view):
         if request.method == 'POST':
-            return request.user.groups.filter(name='Operator').exists() and view.action == 'tool_in_use'
+            return False
+
+        if request.method == 'PATCH':
+            if 'tool_in_use' in request.data and len(request.data) == 1:
+                return True
+            else:
+                return False
+        if request.method == 'PUT':
+            return False
+        
         if request.method == 'DELETE':
             return False
-        return request.user.groups.filter(name='Operator').exists()
+        
+        # Default case
+        return request.user.groups.filter(name='Supervisor').exists()

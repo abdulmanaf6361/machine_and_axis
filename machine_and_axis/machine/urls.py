@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MachineViewSet, AxisViewSet, UserViewSet, token_obtain_pair,test_view
+from .views import MachineViewSet, AxisViewSet, UserViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 router = DefaultRouter()

@@ -2,12 +2,12 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 class Machine(models.Model):
-    machine_id = models.BigIntegerField(primary_key=True)  # constant, never updated
-    machine_name = models.CharField(max_length=100)  # constant, manual update
-    tool_capacity = models.PositiveIntegerField()  # constant, manual update
-    tool_offset = models.FloatField()  # auto-generated, 5 to 40, updates every 15 minutes
-    feedrate = models.PositiveIntegerField()  # auto-generated, 0 to 20000, updates every 15 minutes
-    tool_in_use = models.PositiveIntegerField()  # auto-generated, 1 to tool_capacity, updates every 5 minutes
+    machine_id = models.BigIntegerField(primary_key=True) 
+    machine_name = models.CharField(max_length=100)   
+    tool_capacity = models.PositiveIntegerField()  
+    tool_offset = models.FloatField()  
+    feedrate = models.PositiveIntegerField()  
+    tool_in_use = models.PositiveIntegerField(blank=True,null=True)  
 
     def clean(self):
         # Ensuring tool_offset is within range
