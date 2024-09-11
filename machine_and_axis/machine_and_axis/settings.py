@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -65,13 +66,23 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
 ]
 
-# Configure Channels for WebSockets
+# settings.py
+
+# Channels setup
 ASGI_APPLICATION = 'machine_and_axis.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Make sure Redis is running on this host and port
+        },
     },
 }
+
+
+# Redis settings for other purposes (already used in your script)
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

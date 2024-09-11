@@ -8,6 +8,8 @@ class Machine(models.Model):
     tool_offset = models.FloatField()  
     feedrate = models.PositiveIntegerField()  
     tool_in_use = models.PositiveIntegerField(blank=True,null=True)  
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True)
 
     def clean(self):
         # Ensuring tool_offset is within range

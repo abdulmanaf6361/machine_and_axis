@@ -11,16 +11,18 @@ class Axis(models.Model):
         ('C', 'C Axis'),
     ]
 
-    axis_name = models.CharField(max_length=1, choices=AXIS_CHOICES)  # constant, manual update
-    max_acceleration = models.PositiveIntegerField()  # constant, manual update
-    max_velocity = models.PositiveIntegerField()  # constant, manual update
-    actual_position = models.FloatField()  # auto-generated, -190 to +190, updates every 0.1 sec
-    target_position = models.FloatField()  # auto-generated, -190 to +191, updates every 0.1 sec
-    distance_to_go = models.FloatField(editable=False)  # auto-calculated as target_position - actual_position, updates every 0.1 sec
-    homed = models.BooleanField()  # 0/1, updates every 0.1 sec
-    acceleration = models.PositiveIntegerField()  # auto-generated, 0 to 150, updates every 0.1 sec
-    velocity = models.PositiveIntegerField()  # auto-generated, 0 to 80, updates every 0.1 sec
-    machine = models.ForeignKey(Machine, on_delete=models.CASCADE)  # link to the Machine model
+    axis_name = models.CharField(max_length=1, choices=AXIS_CHOICES) 
+    max_acceleration = models.PositiveIntegerField()
+    max_velocity = models.PositiveIntegerField()  
+    actual_position = models.FloatField()  
+    target_position = models.FloatField()  
+    distance_to_go = models.FloatField(editable=False)  
+    homed = models.BooleanField()  
+    acceleration = models.PositiveIntegerField()  
+    velocity = models.PositiveIntegerField() 
+    machine = models.ForeignKey(Machine, on_delete=models.CASCADE) 
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True)
 
     def clean(self):
         # Validating actual_position

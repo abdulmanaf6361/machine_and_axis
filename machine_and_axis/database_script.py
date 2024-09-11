@@ -27,7 +27,6 @@ UPDATE_INTERVALS = {
     'tool_in_use': 5 * 60,   # Every 5 minutes
     'actual_position': 0.1,  # Every 0.1 seconds
     'target_position': 0.1,  # Every 0.1 seconds
-    'distance_to_go': 0.1,   # Every 0.1 seconds
     'acceleration': 0.1,     # Every 0.1 seconds
     'velocity': 0.1          # Every 0.1 seconds
 }
@@ -58,7 +57,6 @@ def generate_machine_data(machine_id, axis_name):
         'tool_in_use': random.randint(1, 24),
         'actual_position': generate_value('actual_position'),
         'target_position': generate_value('target_position'),
-        'distance_to_go': generate_value('target_position') - generate_value('actual_position'),
         'homed': random.randint(0, 1),
         'acceleration': random.randint(0, 150),
         'velocity': random.randint(0, 80),
@@ -83,8 +81,8 @@ def generate_data():
                 # Generate the data for the machine and axis
                 generate_machine_data(machine_id, axis)
 
-        # Sleep for 0.01 seconds 
-        time.sleep(0.01)
+        # Sleep for 0.1 seconds 
+        time.sleep(0.1)
 
         # Print the time elapsed for debugging or stopping the script
         elapsed_time = time.time() - start_time

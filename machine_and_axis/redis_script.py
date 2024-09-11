@@ -27,17 +27,21 @@ def write_to_database(data):
         }
     )
 
+    latest_axis = Axis.objects.filter(
+        machine=machine,
+        axis_name=data['axis_name']
+    ).order_by('-updated_at').first()
+
     axis = Axis(
         machine=machine,
         axis_name=data['axis_name'],
         actual_position=data['actual_position'],
         target_position=data['target_position'],
-        distance_to_go=data['distance_to_go'],
         homed=data['homed'],
         acceleration=data['acceleration'],
         velocity=data['velocity'],
-        max_acceleration=data['max_acceleration'],
-        max_velocity=data['max_velocity']
+        max_acceleration=latest_axis.max_acceleration,
+        max_velocity=latest_axis.max_velocity
     )
     axis.save()
 
